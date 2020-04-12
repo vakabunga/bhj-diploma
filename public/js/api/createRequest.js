@@ -29,6 +29,7 @@ const createRequest = (options = {}) => {
     if (err === null) {
       console.log('Статус: ', err);
       console.log('Данные ответа: ', response);
+      return response;
     } else {
       console.log('Ошибка: ', err);
     }
@@ -36,7 +37,7 @@ const createRequest = (options = {}) => {
 
   if (xhr.status[0] === 2) {
     let err = null;
-    let response = xhr.responseText;
+    let response = JSON.parse(xhr.responseText);
     callback(err, response);
   }
 
