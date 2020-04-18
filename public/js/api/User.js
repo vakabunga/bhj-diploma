@@ -1,4 +1,4 @@
-import { response } from 'express';
+import { json } from "express";
 
 /**
  * Класс User управляет авторизацией, выходом и
@@ -16,7 +16,7 @@ class User {
    * локальном хранилище.
    * */
   static setCurrent(user) {
-    localStorage.setItem('user', user);
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   /**
@@ -32,7 +32,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    localStorage.length === 0 ? undefined : localStorage.getItem('user');
+    localStorage.getItem('user') ? undefined : localStorage.getItem('user');
   }
 
   /**
@@ -41,7 +41,7 @@ class User {
    * */
   static fetch(data, callback = (f) => f) {
     let response = createRequest({
-      url: `${this.host}${this.url}/current`,
+      url: this.host + this.url + '/current',
       data,
       responseType: 'json',
       method: 'GET',
@@ -62,7 +62,7 @@ class User {
    * */
   static login(data, callback = (f) => f) {
     let response = createRequest({
-      url: `${this.host}${this.url}/login`,
+      url: this.host + this.url + '/login',
       data,
       responseType: 'json',
       method: 'POST',
@@ -81,7 +81,7 @@ class User {
    * */
   static register(data, callback = (f) => f) {
     let response = createRequest({
-      url: `${this.host}${this.url}/register`,
+      url: this.host + this.url + '/register',
       data,
       responseType: 'json',
       method: 'POST',
@@ -98,7 +98,7 @@ class User {
    * */
   static logout(data, callback = (f) => f) {
     let response = createRequest({
-      url: `${this.host}${this.url}/logout`,
+      url: this.host + this.url + '/logout',
       data,
       responseType: 'json',
       method: 'POST',

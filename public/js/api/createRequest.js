@@ -3,13 +3,13 @@
  * на сервер.
  * */
 const createRequest = (options = {}) => {
-  xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
 
   if (options.headers === undefined) {
     for (var prop in options.headers) xhr.setRequestHeader(prop, options.headers[prop]);
   }
 
-  xhr.responseType = options.responseType;
+  options.responseType === undefined ? (xhr.responseType = 'json') : (xhr.responseType = options.responseType);
   xhr.withCredentials = true;
 
   if (options.method === 'GET') {
