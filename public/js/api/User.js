@@ -1,4 +1,4 @@
-import { json } from "express";
+import { json } from 'express';
 
 /**
  * Класс User управляет авторизацией, выходом и
@@ -7,10 +7,6 @@ import { json } from "express";
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
-  constructor() {
-    this.host = Entity.host;
-    this.url = '/user';
-  }
   /**
    * Устанавливает текущего пользователя в
    * локальном хранилище.
@@ -109,3 +105,6 @@ class User {
     }
   }
 }
+
+User.host = Entity.host;
+User.url = '/user';
