@@ -1,5 +1,3 @@
-import { json } from 'express';
-
 /**
  * Класс User управляет авторизацией, выходом и
  * регистрацией пользователя из приложения
@@ -28,7 +26,10 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    localStorage.getItem('user') ? undefined : localStorage.getItem('user');
+    const currentUser = localStorage.getItem('user');
+    if (currentUser && JSON.parse(currentUser)) {
+      return JSON.parse(currentUser);
+    }
   }
 
   /**
