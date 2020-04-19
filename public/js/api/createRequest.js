@@ -15,10 +15,10 @@ const createRequest = (options = {}) => {
   }
 
   if (options.method === 'POST') {
-    const formData = new FormData();
-    formData.append('mail', options.data.mail);
-    formData.append('password', options.data.password);
-    const requestUrl = options.url;
+    formData = new FormData();
+    formData.append('mail', options.data.user.mail);
+    formData.append('password', options.data.user.password);
+    requestUrl = options.url;
   }
 
   try {
@@ -33,48 +33,23 @@ const createRequest = (options = {}) => {
 
     xhr.send(formData);
   } catch (error) {
-    callback(error);
+    options.callback(error);
   }
 
-  // try {
-  //   if (options.method === 'GET') {
-  //     xhr.open(
-  //       options.method,
-  //       `${options.url}?mail=${options.data.mail}&password=${options.data.password}`
-  //     );
-  //     xhr.send();
-  //   }
-
-  //   if (options.method === 'POST') {
-  //     const formData = new FormData();
-  //     formData.append('mail', options.data.mail);
-  //     formData.append('password', options.data.password);
-  //     xhr.open(options.method, options.url);
-  //     xhr.send(formData);
-  //   }
-  // } catch (error) {
-  //   return (err = error);
-  // }
-
-  // function callback(err, response) {
-  //   if (err === null) {
-  //     // console.log('Статус: ', err);
-  //     // console.log('Данные ответа: ', response);
-  //     return response;
-  //   } else {
-  //     // console.log('Ошибка: ', err);
-  //     return err;
-  //   }
-  // }
-
-  if (xhr.status[0] === 2) {
+  xhr.onload = function () {
     let err = null;
-    response = JSON.parse(xhr.responseText);
-    callback(err, response);
-  }
 
-  if (xhr.status[0] === 4 || xhr.status === 5) {
+    if (xhr.status === 500) {
+      err = xhr.statusText;
+      options.callback(err);
+    }
+
+    response = JSON.parse(xhr.response);
+    options.callback(err, response);
+  };
+
+  xhr.onerror = function () {
     let err = xhr.statusText;
-    callback(err);
-  }
+    options.callback(err);
+  };
 };
