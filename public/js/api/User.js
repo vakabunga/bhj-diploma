@@ -14,22 +14,21 @@ class User {
   }
 
   /**
+   * Возвращает текущего авторизованного пользователя
+   * из локального хранилища
+   * */
+  static current() {
+    if (localStorage.getItem('user')) {
+      return JSON.parse(localStorage.getItem('user'));
+    }
+  }
+
+  /**
    * Удаляет информацию об авторизованном
    * пользователе из локального хранилища.
    * */
   static unsetCurrent() {
     localStorage.removeItem('user');
-  }
-
-  /**
-   * Возвращает текущего авторизованного пользователя
-   * из локального хранилища
-   * */
-  static current() {
-    const currentUser = localStorage.getItem('user');
-    if (currentUser && JSON.parse(currentUser)) {
-      return JSON.parse(currentUser);
-    }
   }
 
   /**
@@ -44,11 +43,11 @@ class User {
       method: 'GET',
       callback,
     });
-    if (response.success) {
-      user.setCurrent({ id: response.user.id, name: response.user.name });
-    } else {
-      user.unsetCurrent();
-    }
+    // if (response.success) {
+    //   user.setCurrent({ id: response.user.id, name: response.user.name });
+    // } else {
+    //   user.unsetCurrent();
+    // }
   }
 
   /**
@@ -65,9 +64,10 @@ class User {
       method: 'POST',
       callback,
     });
-    if (response.success) {
-      user.setCurrent({ id: response.user.id, name: response.user.name });
-    }
+    // if (response.success) {
+    //   user.setCurrent({ id: response.user.id, name: response.user.name });
+    // }
+
   }
 
   /**
