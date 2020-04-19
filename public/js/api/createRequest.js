@@ -4,9 +4,7 @@
 const createRequest = (options = {}) => {
   let xhr = new XMLHttpRequest();
 
-  options.responseType === undefined
-    ? (xhr.responseType = 'json')
-    : (xhr.responseType = options.responseType);
+  xhr.responseType = options.responseType;
   xhr.withCredentials = true;
 
   if (options.method === 'GET') {
@@ -16,8 +14,8 @@ const createRequest = (options = {}) => {
 
   if (options.method === 'POST') {
     formData = new FormData();
-    formData.append('mail', options.data.user.mail);
-    formData.append('password', options.data.user.password);
+    formData.append('mail', options.data.mail);
+    formData.append('password', options.data.password);
     requestUrl = options.url;
   }
 
