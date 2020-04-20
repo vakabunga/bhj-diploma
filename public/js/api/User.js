@@ -62,12 +62,16 @@ class User {
       data,
       responseType: 'json',
       method: 'POST',
-      callback,
+      callback: (err, response) => {
+        if (response.success) {
+          console.log('Ура, все получилось!');
+          user.setCurrent({ id: response.user.id, name: response.user.name });
+        } else {
+          return err;
+        }
+      },
     });
-    // if (response.success) {
-    //   user.setCurrent({ id: response.user.id, name: response.user.name });
-    // }
-
+    callback(err, response);
   }
 
   /**
