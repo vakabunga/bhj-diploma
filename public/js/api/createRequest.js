@@ -6,15 +6,16 @@ const createRequest = (options = {}) => {
 
   xhr.responseType = options.responseType;
   xhr.withCredentials = true;
+  let requestUrl;
+  formData = {};
 
   if (options.method === 'GET') {
-    const formData = null;
-    const requestUrl = `${options.url}?mail=${options.data.mail}&password=${options.data.password}`;
+    requestUrl = `${options.url}?mail=${options.data.email}&password=${options.data.password}`;
   }
 
   if (options.method === 'POST') {
     formData = new FormData();
-    formData.append('mail', options.data.mail);
+    formData.append('email', options.data.email);
     formData.append('password', options.data.password);
     requestUrl = options.url;
   }
@@ -22,16 +23,9 @@ const createRequest = (options = {}) => {
   try {
     xhr.open(options.method, requestUrl);
 
-    if (options.headers != undefined) {
-      for (var prop in options.headers)
-        xhr.setRequestHeader(prop, options.headers[prop]);
-    } else {
-      xhr.setRequestHeader('Content-type', 'application/json');
-    }
-
     xhr.send(formData);
   } catch (error) {
-    options.callback(error);
+    callback(error);
   }
 
   xhr.onload = function () {
@@ -39,11 +33,11 @@ const createRequest = (options = {}) => {
 
     if (xhr.status === 500) {
       err = xhr.statusText;
-      options.callback(err);
+      callback(err);
     }
 
-    response = JSON.parse(xhr.response);
-    options.callback(err, response);
+    response = xhr.response;
+    callback(err, response);
   };
 
   xhr.onerror = function () {
