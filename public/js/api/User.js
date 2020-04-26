@@ -41,33 +41,14 @@ class User {
       data,
       responseType: 'json',
       method: 'GET',
-      callback,
-    });
-    // if (response.success) {
-    //   user.setCurrent({ id: response.user.id, name: response.user.name });
-    // } else {
-    //   user.unsetCurrent();
-    // }
-  }
-
-  /**
-   * Производит попытку авторизации.
-   * После успешной авторизации необходимо
-   * сохранить пользователя через метод
-   * User.setCurrent.
-   * */
-  static login(data, callback = (f) => f) {
-    let response = createRequest({
-      url: this.host + this.url + '/login',
-      data,
-      responseType: 'json',
-      method: 'POST',
       callback: (err, response) => {
         if (response.success) {
-          console.log('Ура, все получилось!');
-          user.setCurrent({ id: response.user.id, name: response.user.name });
+          const user = { id: response.user.id, name: response.user.name };
+          User.setCurrent(user);
         } else {
-          return err;
+          User.unsetCurrent();
+          err = response.error;
+          alert(err);
         }
       },
     });
@@ -86,11 +67,38 @@ class User {
       data,
       responseType: 'json',
       method: 'POST',
-      callback,
+      callback: (response) => {
+        if (response.success) {
+          User.setCurrent({ id: response.user.id, name: response.user.name });
+        } else {
+          return response.error;
+        }
+      },
     });
-    if (response.success) {
-      user.setCurrent({ id: response.user.id, name: response.user.name });
-    }
+    callback(err, response);
+  }
+
+  /**
+   * Производит попытку авторизации.
+   * После успешной авторизации необходимо
+   * сохранить пользователя через метод
+   * User.setCurrent.
+   * */
+  static login(data, callback = (f) => f) {
+    let response = createRequest({
+      url: this.host + this.url + '/login',
+      data,
+      responseType: 'json',
+      method: 'POST',
+      callback: (response) => {
+        if (response.success) {
+          User.setCurrent({ id: response.user.id, name: response.user.name });
+        } else {
+          return response.error;
+        }
+      },
+    });
+    callback(err, response);
   }
 
   /**
@@ -103,11 +111,13 @@ class User {
       data,
       responseType: 'json',
       method: 'POST',
-      callback,
+      callback: (response) => {
+        if (response.success) {
+          User.unsetCurrent();
+        }
+      },
     });
-    if (response.success) {
-      user.unsetCurrent();
-    }
+    callback(err, response);
   }
 }
 
