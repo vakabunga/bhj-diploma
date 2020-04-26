@@ -18,7 +18,20 @@ class Sidebar {
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
-
+    const body = Array.from(document.getElementsByTagName('body'));
+    const toggleButton = document.querySelector('.sidebar-toggle');
+    toggleButton.addEventListener('click', () => {
+      if (
+        body[0].classList.contains('sidebar-collapse') ||
+        body[0].classList.contains('sidebar-open')
+      ) {
+        body[0].classList.remove('sidebar-collapse');
+        body[0].classList.remove('sidebar-open');
+      } else {
+        body[0].classList.add('sidebar-collapse');
+        body[0].classList.add('sidebar-open');
+      }
+    });
   }
 
   /**
@@ -28,8 +41,5 @@ class Sidebar {
    * При нажатии на кнопку выхода вызывает User.logout и по успешному
    * выходу устанавливает App.setState( 'init' )
    * */
-  static initAuthLinks() {
-
-  }
-
+  static initAuthLinks() {}
 }
