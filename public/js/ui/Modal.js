@@ -15,7 +15,7 @@ class Modal {
   constructor(element) {
     if (element) {
       this.element = element;
-      Modal.registerEvents();
+      this.registerEvents();
     } else throw 'Элемент не существует!';
   }
 
@@ -25,7 +25,7 @@ class Modal {
    * (с помощью метода Modal.onClose)
    * */
   registerEvents() {
-    const closeModal = element.querySelectorAll('[data-dismiss="modal"]');
+    const closeModal = this.element.querySelectorAll('[data-dismiss="modal"]');
     closeModal.forEach((e) => {
       e.addEventListener('click', Modal.onClose);
     });
@@ -43,7 +43,7 @@ class Modal {
    * Удаляет обработчики событий
    * */
   unregisterEvents() {
-    const closeModal = element.querySelectorAll('[data-dismiss="modal"]');
+    const closeModal = this.element.querySelectorAll('[data-dismiss="modal"]');
     closeModal.forEach((e) => {
       e.removeEventListener('click', Modal.onClose);
     });
