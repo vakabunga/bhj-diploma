@@ -21,16 +21,8 @@ class Sidebar {
     const body = Array.from(document.getElementsByTagName('body'));
     const toggleButton = document.querySelector('.sidebar-toggle');
     toggleButton.addEventListener('click', () => {
-      if (
-        body[0].classList.contains('sidebar-collapse') ||
-        body[0].classList.contains('sidebar-open')
-      ) {
-        body[0].classList.remove('sidebar-collapse');
-        body[0].classList.remove('sidebar-open');
-      } else {
-        body[0].classList.add('sidebar-collapse');
-        body[0].classList.add('sidebar-open');
-      }
+      body[0].classList.toggle('sidebar-collapse');
+      body[0].classList.toggle('sidebar-open');
     });
   }
 
@@ -41,5 +33,21 @@ class Sidebar {
    * При нажатии на кнопку выхода вызывает User.logout и по успешному
    * выходу устанавливает App.setState( 'init' )
    * */
-  static initAuthLinks() {}
+  static initAuthLinks() {
+    const authLinks = Array.from(document.getElementsByClassName('menu-item'));
+    authLinks.forEach((e) => {
+      e.addEventListener('click', () => {
+        if (e.classList.contains('menu-item_login')) {
+          App.getModal('login').open();
+        }
+        if (e.classList.contains('menu-item_register')) {
+          App.getModal('register').open();
+        }
+        if (e.classList.contains('menu-item_register')) {
+          const data = User.current();
+          User.logout(data, App.setState('init'));
+        }
+      });
+    });
+  }
 }
