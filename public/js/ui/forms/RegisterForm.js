@@ -14,5 +14,6 @@ class RegisterForm extends AsyncForm {
     User.register(options.data, options.callback);
     App.setState('user-logged');
     App.modals.register.onClose();
+    App.modals.register.preventDefault();
   }
 }

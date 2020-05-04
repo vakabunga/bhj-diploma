@@ -3,7 +3,7 @@
  * создания новой транзакции
  * Наследуется от AsyncForm
  * */
-class CreateTransactionForm extends AsyncForm {
+class CreateTransactionForm {
   /**
    * Вызывает родительский конструктор и
    * метод renderAccountsList
