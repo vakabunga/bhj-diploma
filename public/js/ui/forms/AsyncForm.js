@@ -38,7 +38,7 @@ class AsyncForm {
    * }
    * */
   getData() {
-    const inputData = Array.from(this.element.getElementsbyTagName('input'));
+    const inputData = Array.from(this.element.getElementsByTagName('input'));
     const data = {};
     inputData.forEach((e) => {
       data[e.name] = e.value;
