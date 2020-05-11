@@ -15,8 +15,9 @@ const createRequest = (options = {}) => {
 
   if (options.method === 'POST') {
     formData = new FormData();
-    formData.append('email', options.data.email);
-    formData.append('password', options.data.password);
+    for (let prop in options.data) {
+      formData.append(prop, options.data[prop]);
+    }
     requestUrl = options.url;
   }
 
@@ -25,7 +26,7 @@ const createRequest = (options = {}) => {
 
     xhr.send(formData);
   } catch (error) {
-    callback(error);
+    options.callback(error);
   }
 
   xhr.onload = function () {
@@ -33,11 +34,11 @@ const createRequest = (options = {}) => {
 
     if (xhr.status === 500) {
       err = xhr.statusText;
-      callback(err);
+      options.callback(err);
     }
 
     response = xhr.response;
-    callback(err, response);
+    options.callback(err, response);
   };
 
   xhr.onerror = function () {
