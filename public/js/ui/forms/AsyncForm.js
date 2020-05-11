@@ -38,11 +38,14 @@ class AsyncForm {
    * }
    * */
   getData() {
-    const inputData = Array.from(this.element.getElementsByTagName('input'));
+    const formData = new FormData(this.element),
+      entries = formData.entries();
     const data = {};
-    inputData.forEach((e) => {
-      data[e.name] = e.value;
-    });
+    for (let item of entries) {
+      const key = item[0],
+        value = item[1];
+      data[key] = value;
+    }
     return data;
   }
 
