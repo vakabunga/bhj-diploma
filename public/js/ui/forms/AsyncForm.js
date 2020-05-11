@@ -45,7 +45,9 @@ class AsyncForm {
       const key = item[0],
         value = item[1];
       data[key] = value;
+      item[1] = '';
     }
+    
     return data;
   }
 
