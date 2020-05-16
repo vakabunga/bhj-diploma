@@ -90,7 +90,7 @@ class User {
       data,
       responseType: 'json',
       method: 'POST',
-      callback: (response) => {
+      callback: (err, response) => {
         if (response.success) {
           User.setCurrent({ id: response.user.id, name: response.user.name });
         } else {
@@ -111,7 +111,7 @@ class User {
       data,
       responseType: 'json',
       method: 'POST',
-      callback: (response) => {
+      callback: (err, response) => {
         if (response.success) {
           User.unsetCurrent();
         }
