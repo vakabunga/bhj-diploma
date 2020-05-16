@@ -10,7 +10,11 @@ class CreateAccountForm extends AsyncForm {
    * а также вызывает App.update()
    * и сбрасывает форму
    * */
-  onSubmit( options ) {
-
+  onSubmit(options) {
+    Account.create(options, () => {
+      App.update();
+      this.element.reset();
+      App.forms.createAccount.omClose();
+    });
   }
 }

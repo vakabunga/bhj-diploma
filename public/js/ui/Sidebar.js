@@ -43,7 +43,7 @@ class Sidebar {
         if (e.classList.contains('menu-item_register')) {
           App.getModal('register').open();
         }
-        if (e.classList.contains('menu-item_register')) {
+        if (e.classList.contains('menu-item_logout')) {
           const data = User.current();
           User.logout(data, App.setState('init'));
         }
