@@ -46,7 +46,6 @@ class AsyncForm {
         value = item[1];
       data[key] = value;
     }
-    
     return data;
   }
 

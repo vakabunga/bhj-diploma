@@ -59,7 +59,7 @@ class AccountsWidget {
             this.renderItem(item);
           });
         } catch {
-          err;
+          throw err;
         }
         this.registerEvents();
       });
