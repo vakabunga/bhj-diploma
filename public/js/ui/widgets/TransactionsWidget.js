@@ -10,8 +10,11 @@ class TransactionsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (element) {
+      this.element = element;
+      this.registerEvents();
+    } else throw 'Элемент не существует';
   }
   /**
    * Регистрирует обработчики нажатия на
@@ -20,6 +23,13 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-
+    const buttonIncome = this.element.querySelector('.btn-success');
+    const buttonExpense = this.element.querySelector('.btn-danger');
+    buttonIncome.onclick = () => {
+      App.getModal('newIncome').open();
+    };
+    buttonExpense.onclick = () => {
+      App.getModal('newExpense').open();
+    };
   }
 }

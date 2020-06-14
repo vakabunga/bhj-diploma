@@ -52,13 +52,16 @@ class AccountsWidget {
    * */
   update() {
     if (User.current()) {
-      Account.list(User.current(), () => {
+      Account.list(User.current(), (err, response) => {
         this.clear();
         try {
-        this.renderItem(item);
+          response.data.forEach((item) => {
+            this.renderItem(item);
+          });
         } catch {
-          return "у Пользователя нет счетов"
+          err;
         }
+        this.registerEvents();
       });
     }
   }
@@ -84,9 +87,11 @@ class AccountsWidget {
    * */
   onSelectAccount(element) {
     const activeAccount = this.element.querySelector('.active');
-    activeAccount.classList.remove('active');
+    if (activeAccount) {
+      activeAccount.classList.remove('active');
+    }
     element.classList.add('active');
-    App.showPage('transactions', { account_id: id_счёта });
+    App.showPage('transactions', { account_id: element.dataset.id });
   }
 
   /**
@@ -96,7 +101,7 @@ class AccountsWidget {
    * */
   getAccountHTML(item) {
     const accountHTML = `
-      <li class="active account" data-id="${item.id}">
+      <li class="account" data-id="${item.id}">
         <a href="#">
           <span>${item.name}</span> /
           <span>${item.sum}</span>
@@ -113,6 +118,6 @@ class AccountsWidget {
    * и добавляет его внутрь элемента виджета
    * */
   renderItem(item) {
-this.element.insertAdjacentHTML('beforeEnd', this.getAccountHTML(item))
+    this.element.insertAdjacentHTML('beforeEnd', this.getAccountHTML(item));
   }
 }
