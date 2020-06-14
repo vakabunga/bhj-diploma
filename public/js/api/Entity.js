@@ -26,7 +26,7 @@ class Entity {
    * */
   static create(data, callback = (f) => f) {
     const modifiedData = Object.assign({ _method: 'PUT' }, data);
-    createRequest({
+    let response = createRequest({
       url: this.host + this.url,
       modifiedData,
       responseType: 'json',

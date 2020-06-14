@@ -54,8 +54,11 @@ class AccountsWidget {
     if (User.current()) {
       Account.list(User.current(), () => {
         this.clear();
-        console.log(response);
+        try {
         this.renderItem(item);
+        } catch {
+          return "у Пользователя нет счетов"
+        }
       });
     }
   }
