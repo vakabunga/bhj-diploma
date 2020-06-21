@@ -23,6 +23,8 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
+    console.log('TransactionsWidget registerEvents');
+    console.log(this);
     const buttonIncome = this.element.querySelector('.btn-success');
     const buttonExpense = this.element.querySelector('.btn-danger');
     buttonIncome.onclick = () => {

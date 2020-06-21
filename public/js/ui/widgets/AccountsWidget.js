@@ -28,6 +28,8 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
+    console.log('AccountsWidget registerEvents');
+    console.log(this);
     const createAcc = this.element.querySelector('.create-account');
     createAcc.onclick = () => {
       App.getModal('createAccount').open();
@@ -51,6 +53,8 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
+    console.log('AccountsWidget update');
+    console.log(this);
     if (User.current()) {
       Account.list(User.current(), (err, response) => {
         this.clear();
@@ -72,6 +76,8 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
+    console.log('AccountsWidget clear');
+    console.log(this);
     const clearAccounts = Array.from(this.element.querySelectorAll('.account'));
     clearAccounts.forEach((elem) => {
       elem.remove();
@@ -86,6 +92,9 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount(element) {
+    console.log('AccountsWidget onSelectAccount');
+    console.log(this);
+    console.log(element);
     const activeAccount = this.element.querySelector('.active');
     if (activeAccount) {
       activeAccount.classList.remove('active');
@@ -100,6 +109,9 @@ class AccountsWidget {
    * item - объект с данными о счёте
    * */
   getAccountHTML(item) {
+    console.log('AccountsWidget getAccountHTML');
+    console.log(this);
+    console.log(item);
     const accountHTML = `
       <li class="account" data-id="${item.id}">
         <a href="#">
@@ -118,6 +130,9 @@ class AccountsWidget {
    * и добавляет его внутрь элемента виджета
    * */
   renderItem(item) {
+    console.log('AccountsWidget renderItem');
+    console.log(this);
+    console.log(item);
     this.element.insertAdjacentHTML('beforeEnd', this.getAccountHTML(item));
   }
 }

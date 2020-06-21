@@ -17,6 +17,7 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
+    console.log('CreateTransactionForm renderAccountsList');
     const accountList = this.element.querySelector('.accounts-select');
     Account.list(User.current(), (err, response) => {
       try {
@@ -36,6 +37,9 @@ class CreateTransactionForm extends AsyncForm {
    * в котором находится форма
    * */
   onSubmit(options) {
+    console.log('CreateTransactionForm renderAccountsList');
+    console.log(this);
+    console.log(options);
     Transaction.create(options, () => {
       App.update();
       this.element.reset();
