@@ -2,8 +2,6 @@
  * Основная функция для совершения запросов на сервер.
  * */
 const createRequest = (options = {}) => {
-  console.log('createRequest');
-  console.log(options);
   let xhr = new XMLHttpRequest();
 
   xhr.responseType = options.responseType;
@@ -12,7 +10,13 @@ const createRequest = (options = {}) => {
   formData = {};
 
   if (options.method === 'GET') {
-    requestUrl = `${options.url}?mail=${options.data.email}&password=${options.data.password}`;
+    requestUrl = `${options.url}?`;
+    if (options.data) {
+      Object.entries(options.data).forEach((elem) => {
+        requestUrl += `${elem[0]}=${elem[1]}&`;
+      });
+    }
+    requestUrl = requestUrl.substring(0, requestUrl.length - 1);
   }
 
   if (options.method === 'POST') {

@@ -10,8 +10,6 @@ class User {
    * локальном хранилище.
    * */
   static setCurrent(user) {
-    console.log('User setCurrent');
-    console.log(user);
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -20,9 +18,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    console.log('User current');
     if (localStorage.getItem('user')) {
-      console.log(JSON.parse(localStorage.getItem('user')));
       return JSON.parse(localStorage.getItem('user'));
     }
   }
@@ -32,7 +28,6 @@ class User {
    * пользователе из локального хранилища.
    * */
   static unsetCurrent() {
-    console.log('User unsetCurrent');
     localStorage.removeItem('user');
   }
 
@@ -41,24 +36,18 @@ class User {
    * авторизованном пользователе.
    * */
   static fetch(data, callback = (f) => f) {
-    console.log('User fetch');
-    console.log(data);
     createRequest({
       url: this.host + this.url + '/current',
       data,
       responseType: 'json',
       method: 'GET',
       callback: (err, response) => {
-        console.log('response after User fetch. reload page')
-        console.log(response);
-        console.log(response.success);
         if (response.success) {
           const user = { id: response.user.id, name: response.user.name };
           User.setCurrent(user);
         } else {
           User.unsetCurrent();
-          err = response.error;
-          alert(err);
+          return response.error;
         }
         callback(err, response);
       },
@@ -72,9 +61,7 @@ class User {
    * User.setCurrent.
    * */
   static register(data, callback = (f) => f) {
-    console.log('User register');
-    console.log(data);
-    let response = createRequest({
+    createRequest({
       url: this.host + this.url + '/register',
       data,
       responseType: 'json',
@@ -97,9 +84,7 @@ class User {
    * User.setCurrent.
    * */
   static login(data, callback = (f) => f) {
-    console.log('User login');
-    console.log(data);
-    let response = createRequest({
+    createRequest({
       url: this.host + this.url + '/login',
       data,
       responseType: 'json',
@@ -120,9 +105,7 @@ class User {
    * выхода необходимо вызвать метод User.unsetCurrent
    * */
   static logout(data, callback = (f) => f) {
-    console.log('User login');
-    console.log(data);
-    let response = createRequest({
+    createRequest({
       url: this.host + this.url + '/logout',
       data,
       responseType: 'json',
@@ -130,6 +113,7 @@ class User {
       callback: (err, response) => {
         if (response.success) {
           User.unsetCurrent();
+          App.update(); // если не добавиь, то не обновляется страница с транзакциями
         }
         callback(err, response);
       },

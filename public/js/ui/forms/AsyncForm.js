@@ -24,8 +24,6 @@ class AsyncForm {
    * вызывает метод submit()
    * */
   registerEvents() {
-    console.log('AsyncForm registerEvents');
-    console.log(this);
     this.element.addEventListener('submit', (e) => {
       e.preventDefault();
       this.submit();
@@ -40,8 +38,6 @@ class AsyncForm {
    * }
    * */
   getData() {
-    console.log('AsyncForm getData');
-    console.log(this);
     const formData = new FormData(this.element),
       entries = formData.entries();
     const data = {};
@@ -50,25 +46,17 @@ class AsyncForm {
         value = item[1];
       data[key] = value;
     }
-    console.log(data);
     return data;
   }
 
-  onSubmit(options) {
-    console.log('AsyncForm onSubmit');
-    console.log(this);
-    console.log(options);
-  }
+  onSubmit(options) {}
 
   /**
    * Вызывает метод onSubmit и передаёт туда
    * данные, полученные из метода getData()
    * */
   submit() {
-    console.log('AsyncForm submit');
-    console.log(this);
     const data = this.getData();
-    console.log(data);
     this.onSubmit(data);
   }
 }
