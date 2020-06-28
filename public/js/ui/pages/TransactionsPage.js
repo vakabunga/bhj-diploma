@@ -57,8 +57,14 @@ class TransactionsPage {
         if (Object.keys(this.lastOptions).length) {
           if (confirm('Вы действительно хотите удалить счёт?')) {
             Account.remove(this.lastOptions.account_id, {}, () => {
-              App.update();
+              // удаляем список транзакций к удаляемому счету из БД
+              Transaction.list(this.lastOptions, () => {
+                response.data.forEach((elem) => {
+                  Transaction.remove(elem.id, {});
+                });
+              });
               this.clear();
+              App.update();
             });
           }
         }
@@ -91,7 +97,9 @@ class TransactionsPage {
     if (options) {
       this.lastOptions = options;
       Account.get(options.account_id, {}, () => {
-        this.renderTitle(response.name);
+        if (response.data.name) {
+          this.renderTitle(response.data.name);
+        }
       });
       Transaction.list(options, () => {
         this.renderTransactions(response.data);
@@ -171,7 +179,7 @@ class TransactionsPage {
   renderTransactions(data) {
     let accounts = [];
     const transactions = document.querySelector('.content');
-    if (data) {
+    if (data.length) {
       data.forEach((elem) => {
         accounts.push(this.getTransactionHTML(elem));
       });
