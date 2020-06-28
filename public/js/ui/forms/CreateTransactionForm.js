@@ -19,15 +19,13 @@ class CreateTransactionForm extends AsyncForm {
    * */
   renderAccountsList() {
     const accountList = this.element.querySelector('.accounts-select');
-    if (User.current()) { // чтоб не вылетала ошибка      
-      Account.list(User.current(), (err, response) => {
-        const fullAccountsList = [];
-        response.data.forEach((item) => {
-          fullAccountsList.push(`<option value="${item.id}">${item.name}</option>`);
-        });
-        accountList.innerHTML = fullAccountsList.join('');
+    Account.list({}, (err, response) => {
+      const fullAccountsList = [];
+      response.data.forEach((item) => {
+        fullAccountsList.push(`<option value="${item.id}">${item.name}</option>`);
       });
-    }
+      accountList.innerHTML = fullAccountsList.join('');
+    });
   }
 
   /**

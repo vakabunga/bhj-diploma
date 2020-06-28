@@ -52,17 +52,19 @@ class TransactionsPage {
    * для обновления приложения
    * */
   removeAccount() {
-    try {
-      if (Object.keys(this.lastOptions).length) {
-        if (confirm('Вы действительно хотите удалить счёт?')) {
-          Account.remove(this.lastOptions.account_id, {}, () => {
-            App.update();
-            this.clear();
-          });
+    if (User.current()) {
+      try {
+        if (Object.keys(this.lastOptions).length) {
+          if (confirm('Вы действительно хотите удалить счёт?')) {
+            Account.remove(this.lastOptions.account_id, {}, () => {
+              App.update();
+              this.clear();
+            });
+          }
         }
+      } catch {
+        alert('Счёт не выбран');
       }
-    } catch {
-      alert('Счёт не выбран');
     }
   }
 
