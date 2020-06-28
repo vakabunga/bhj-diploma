@@ -33,15 +33,13 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-    const removeAcc = this.element.querySelector('.remove-account');
-    const removeTrans = Array.from(this.element.querySelectorAll('.transaction__remove'));
-    removeAcc.onclick = () => {
-      this.removeAccount();
-    };
-    removeTrans.forEach((elem) => {
-      elem.onclick = () => {
-        this.removeTransaction(elem.dataset.id);
-      };
+    this.element.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-account')) {
+        this.removeAccount();
+      }
+      if (e.target.classList.contains('transaction__remove') || e.target.parentElement.classList.contains('transaction__remove')) {
+        e.target.dataset.id ? this.removeTransaction(e.target.dataset.id) : this.removeTransaction(e.target.parentElement.dataset.id);
+      }
     });
   }
 
@@ -54,13 +52,17 @@ class TransactionsPage {
    * для обновления приложения
    * */
   removeAccount() {
-    if (Object.keys(this.lastOptions).length) {
-      if (confirm('Вы действительно хотите удалить счёт?')) {
-        Account.remove(this.lastOptions.account_id, () => {
-          App.update();
-          this.clear();
-        });
+    try {
+      if (Object.keys(this.lastOptions).length) {
+        if (confirm('Вы действительно хотите удалить счёт?')) {
+          Account.remove(this.lastOptions.account_id, {}, () => {
+            App.update();
+            this.clear();
+          });
+        }
       }
+    } catch {
+      alert('Счёт не выбран');
     }
   }
 
@@ -71,7 +73,7 @@ class TransactionsPage {
    * */
   removeTransaction(id) {
     if (confirm('Вы действительно хотите удалить эту транзакцию?')) {
-      Transaction.remove(id, () => {
+      Transaction.remove(id, {}, () => {
         App.update();
       });
     }
@@ -86,11 +88,11 @@ class TransactionsPage {
   render(options) {
     if (options) {
       this.lastOptions = options;
-      Account.get(options.account_id, () => {
+      Account.get(options.account_id, {}, () => {
         this.renderTitle(response.name);
       });
       Transaction.list(options, () => {
-        this.renderTransactions(response);
+        this.renderTransactions(response.data);
       });
     }
   }
@@ -166,13 +168,12 @@ class TransactionsPage {
    * */
   renderTransactions(data) {
     let accounts = [];
-    if (data.data) {
-      const transactions = document.querySelector('.content');
-      data.data.forEach((elem) => {
+    const transactions = document.querySelector('.content');
+    if (data) {
+      data.forEach((elem) => {
         accounts.push(this.getTransactionHTML(elem));
       });
-      transactions.innerHTML = accounts.join('');
-      this.registerEvents(); // иначе не регистрирцуются обработчики на кнопке удалить транзакцию
     }
+    transactions.innerHTML = accounts.join('');
   }
 }

@@ -45,7 +45,9 @@ class Sidebar {
         }
         if (e.classList.contains('menu-item_logout')) {
           const data = User.current();
-          User.logout(data, App.setState('init'));
+          User.logout(data, () => {
+            App.setState('init');
+          });
         }
       });
     });

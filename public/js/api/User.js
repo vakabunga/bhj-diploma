@@ -70,6 +70,7 @@ class User {
         if (response.success) {
           User.setCurrent({ id: response.user.id, name: response.user.name });
         } else {
+          alert(response.error);
           return response.error;
         }
         callback(err, response);
@@ -93,6 +94,7 @@ class User {
         if (response.success) {
           User.setCurrent({ id: response.user.id, name: response.user.name });
         } else {
+          alert(response.error);
           return response.error;
         }
         callback(err, response);
@@ -113,7 +115,6 @@ class User {
       callback: (err, response) => {
         if (response.success) {
           User.unsetCurrent();
-          App.update(); // если не добавиь, то не обновляется страница с транзакциями
         }
         callback(err, response);
       },

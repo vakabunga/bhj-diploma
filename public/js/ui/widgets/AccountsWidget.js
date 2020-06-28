@@ -28,15 +28,13 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-    const createAcc = this.element.querySelector('.create-account');
-    createAcc.onclick = () => {
-      App.getModal('createAccount').open();
-    };
-    const accounts = Array.from(this.element.querySelectorAll('.account'));
-    accounts.forEach((elem) => {
-      elem.onclick = () => {
-        this.onSelectAccount(elem);
-      };
+    this.element.addEventListener('click', (e) => {
+      if (e.target.closest('li').classList.contains('account')) {
+        this.onSelectAccount(e.target.closest('li'));
+      }
+      if (e.target.classList.contains('create-account') || e.target.parentElement.classList.contains('create-account')) {
+        App.getModal('createAccount').open();
+      }
     });
   }
 
@@ -54,14 +52,11 @@ class AccountsWidget {
     if (User.current()) {
       Account.list(User.current(), (err, response) => {
         this.clear();
-        try {
+        if (response.data) {
           response.data.forEach((item) => {
             this.renderItem(item);
           });
-        } catch {
-          throw err;
         }
-        this.registerEvents();
       });
     }
   }
