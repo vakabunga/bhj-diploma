@@ -39,9 +39,9 @@ class CreateTransactionForm extends AsyncForm {
       App.update();
       this.element.reset();
       if (this.element.id.includes('income')) {
-        App.modals.newIncome.onClose();
+        App.modals.newIncome.close();
       } else {
-        App.modals.newExpense.onClose();
+        App.modals.newExpense.close();
       }
     });
   }
